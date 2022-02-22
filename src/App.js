@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 import Login from './components/Login'
 import FriendsList from './components/Friendslist'
@@ -23,7 +23,7 @@ function App() {
       <Route path="/" >
         <Login signIn={signIn} />
       </Route>
-      <Route path="/Friends">
+      <Route path="/friends">
         <FriendsList />
       </Route>
     </Router>
