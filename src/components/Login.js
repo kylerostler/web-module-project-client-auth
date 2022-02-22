@@ -19,9 +19,7 @@ export default function Login(props) {
     }
 
     const onSubmit = evt => {
-        evt.preventDefault()
         props.signIn(values)
-        history.push('/friends')
     }
 
 
