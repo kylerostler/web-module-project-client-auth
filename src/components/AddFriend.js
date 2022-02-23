@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const initFormValues = {
     username: '',
     email: '',
-    age: null
+    age: 0
 }
 
 export default function AddFriend(props) {
+    const { push } = useHistory()
+    const { friends, postFriend } = props
     const [addValues, setAddValues] = useState(initFormValues)
 
     const onChange = evt => {
@@ -16,7 +19,8 @@ export default function AddFriend(props) {
 
     const onSubmit = evt => {
         evt.preventDefault()
-        console.log(addValues)
+        postFriend(addValues)
+        push('/friends')
     }
 
     return (

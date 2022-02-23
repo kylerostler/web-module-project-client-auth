@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const initFormValues = {
     username: '',
@@ -10,8 +10,9 @@ const initFormValues = {
 
 export default function Login(props) {
 
+    const { push } = useHistory();
+
     const [values, setValues] = useState(initFormValues)
-    let history = useHistory();
 
     const onChange = evt => {
         const { id, value } = evt.target
@@ -19,9 +20,10 @@ export default function Login(props) {
     }
 
     const onSubmit = evt => {
+        evt.preventDefault()
         props.signIn(values)
+        push('/friends')
     }
-
 
     return(
         <form id="loginForm" onSubmit={onSubmit}>

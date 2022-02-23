@@ -11,11 +11,11 @@ import axiosWithAuth from './axios';
 function App() {
   const { push } = useHistory()
   const [friends, setFriends] = useState([])
+
   const signIn = ({username, password}) => {
     axios.post('http://localhost:9000/api/login', { username, password })
       .then(res => {
         window.localStorage.setItem('token', res.data.token)
-        push('/friends')
       })
       .catch(err => {
         debugger
@@ -25,7 +25,6 @@ function App() {
   const getFriends = () => {
     axiosWithAuth().get('http://localhost:9000/api/friends')
     .then(res => {
-      console.log(res)
       setFriends(res.data)
     })
     .catch(err => {
@@ -33,31 +32,50 @@ function App() {
     })
   }
 
-
+  const postFriend = ({ username, age, email }) => {
+    axiosWithAuth().post('http://localhost:9000/api/friends', { username, email, age})
+    .then(res => {
+      setFriends(...friends, res.data)
+    })
+    .catch(err => {
+      debugger
+    })
+  }
 
   return (
     <Router>
       <div className='App'>
 
+        <Route exact path="/" >
         <header>
           <h2>Links</h2>
           <Link to="">---login---</Link>
           <Link to="friends">---friends---</Link>
           <Link to="friends/add">---add friends---</Link>
-          <Link to="friends">---logout---</Link>
         </header>
-
-        <Route exact path="/" >
           <Login signIn={signIn} />
         </Route>
 
         <Route exact path="/friends">
+        <header>
+          <h2>Links</h2>
+          <Link to="">---home---</Link>
+          <Link to="friends/add">---add friends---</Link>
+        </header>
           <FriendsList getFriends={getFriends} friends={friends}/>
         </Route>
 
         <Route exact path="/friends/add">
-          <AddFriend />
+        <header>
+          <h2>Links</h2>
+          <Link to="">---home---</Link>
+        </header>
+          <AddFriend postFriend={postFriend} friends={friends}/>
         </Route>
+
+        <footer>
+          <button id="logout">Logout</button>
+        </footer>
 
       </div>
     </Router>
