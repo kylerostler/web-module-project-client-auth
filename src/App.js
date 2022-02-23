@@ -6,14 +6,14 @@ import Login from './components/Login'
 import FriendsList from './components/Friendslist'
 import AddFriend from './components/AddFriend'
 import axiosWithAuth from './axios';
-
+import Logout from './components/Logout';
 
 function App() {
   const { push } = useHistory()
   const [friends, setFriends] = useState([])
 
   const signIn = ({username, password}) => {
-    axios.post('http://localhost:9000/api/login', { username, password })
+    axiosWithAuth().post('http://localhost:9000/api/login', { username, password })
       .then(res => {
         window.localStorage.setItem('token', res.data.token)
       })
@@ -42,17 +42,15 @@ function App() {
     })
   }
 
+
+
   return (
     <Router>
       <div className='App'>
-
+        <h1>
+        <Link to="/">---HOME---</Link>
+        </h1>
         <Route exact path="/" >
-        <header>
-          <h2>Links</h2>
-          <Link to="">---login---</Link>
-          <Link to="friends">---friends---</Link>
-          <Link to="friends/add">---add friends---</Link>
-        </header>
           <Login signIn={signIn} />
         </Route>
 
@@ -61,6 +59,7 @@ function App() {
           <h2>Links</h2>
           <Link to="">---home---</Link>
           <Link to="friends/add">---add friends---</Link>
+          <Link to="/logout">---logout</Link>
         </header>
           <FriendsList getFriends={getFriends} friends={friends}/>
         </Route>
@@ -69,13 +68,14 @@ function App() {
         <header>
           <h2>Links</h2>
           <Link to="">---home---</Link>
+          <Link to="/logout">---logout</Link>
         </header>
           <AddFriend postFriend={postFriend} friends={friends}/>
         </Route>
 
-        <footer>
-          <button id="logout">Logout</button>
-        </footer>
+        <Route exact path="/logout">
+          <Logout />
+        </Route>
 
       </div>
     </Router>
